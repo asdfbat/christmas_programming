@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import imageio
 
-grid_size = (100,100)
+grid_size = (20,20)
 start = np.array( [np.random.randint(grid_size[0]//4), np.random.randint(grid_size[1]//4)] )
 target = np.array( [np.random.randint(3*grid_size[0]//4, grid_size[0]),\
 				    np.random.randint(3*grid_size[1]//4, grid_size[1])] )
@@ -48,7 +48,7 @@ def x():
 
 moves = x()
 
-#images = []
-#for i in range(1, moves):
-#	images.append( imageio.imread("fig/plot_%d.png"%i) )
-#imageio.mimsave("movie.gif", images)
+images = []
+for i in range(1, moves):
+	images.append( imageio.imread("fig/plot_%.5d.png"%i) )
+imageio.mimsave("movie.gif", images)
