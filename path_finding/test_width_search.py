@@ -1,17 +1,18 @@
 """
 Generates a random grid if passable/impassable tiles for the width_search
-Random start and target locations.
+Random start and end locations.
 """
 import numpy as np
 from width_search import width_search
+from grid_animator import grid_animator
 
-grid_size = (20,20)
+grid_size = (10,10)
 start = np.array( [np.random.randint(grid_size[0]//4), np.random.randint(grid_size[1]//4)] )
-target = np.array( [np.random.randint(3*grid_size[0]//4, grid_size[0]),\
+end = np.array( [np.random.randint(3*grid_size[0]//4, grid_size[0]),\
 				    np.random.randint(3*grid_size[1]//4, grid_size[1])] )
 grid = np.random.choice([-1,0], size=grid_size, p=[0.3,0.7])
-grid[target[0],target[1]] = 2
-grid[start[0],start[1]] = -2
-grid_weights = np.zeros(grid_size)
+grid[start[0],start[1]] = 3
+grid[end[0],end[1]] = 4
 
-moves, success = width_search(grid, True)
+width_search(grid, start, end)
+grid_animator()
