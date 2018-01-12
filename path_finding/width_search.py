@@ -16,12 +16,13 @@ def width_search(grid, start, end):
 	np.save("grid.npy", grid)
 	grid_size = np.shape(grid)
 	moves_array = np.zeros( shape=(grid_size[0]*grid_size[1], 2), dtype=int )
+	moves_list_broad = []
+	possible_steps = np.array([[-1,0],[0,1],[1,0],[0,-1]])
 	def execute_width_search():
-		possible_steps = np.array([[-1,0],[0,1],[1,0],[0,-1]])
-		nr_moves = 0
 		end_found = False
 		current_tiles = np.array([start.copy()])
 		new_tiles = [0]  # Just making sure new_tiles isn't empty(see next line).
+		nr_moves = 0
 		while np.size(new_tiles) != 0:  # While not stuck.
 			new_tiles = []
 			for current_tile in current_tiles:  # For every former tile,
@@ -29,18 +30,30 @@ def width_search(grid, start, end):
 					tile = current_tile + step
 					if 0 <= tile[0] < grid_size[0] and 0 <= tile[1] < grid_size[1]\
 					and grid[tile[0],tile[1]] in [0,4]:  # Checking if passable and not out of bounds.
-						grid[tile[0],tile[1]] = 1  # Marking as passed.
-						new_tiles.append(tile)
-						nr_moves += 1
-						moves_array[nr_moves] = tile
 						if (tile == end).all():
 							end_found = True
 							print("You have arrived at your destination!")
 							return(nr_moves, True)
+						new_tiles.append(tile)
+						nr_moves += 1
+						grid[tile[0],tile[1]] = 1  # Marking as passed.
+						moves_array[nr_moves-1] = tile
 			current_tiles = np.array(new_tiles)
+			moves_list_broad.append(current_tiles)
 		return(nr_moves, False)  # If stuck.
-
 	nr_moves, success = execute_width_search()
-
+	moves_array = moves_array[:nr_moves]
+	actual_path = []
+	current_tile = end
+	for i in range(len(moves_list_broad)-1, -1, -1):
+		for tile in moves_list_broad[i]:
+			for possible_step in current_tile + possible_steps:
+				if (tile == possible_step).all():
+					actual_path.append(tile)
+					current_tile = tile
+					break
+	actual_path = np.array(actual_path)
 	np.save("moves.npy", moves_array)
+	np.save("path.npy", actual_path)
+	np.save("path_broad.npy", moves_list_broad)
 	return(grid, moves_array, nr_moves, success)

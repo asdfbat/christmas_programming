@@ -12,7 +12,7 @@ def grid_animator():
 
 	grid = np.load("grid.npy")
 	moves_array = np.load("moves.npy")
-
+	actual_path = np.load("path.npy")
 	grid_size = np.shape(grid)
 	nr_moves = len(moves_array)
 	plt.matshow(grid)
@@ -26,9 +26,20 @@ def grid_animator():
 		plt.close()
 		grid[move[0],move[1]] = 1
 
+	for i in range(len(actual_path)):
+		grid[actual_path[i,0],actual_path[i,1]] = 2
+	plt.matshow(grid)
+	plt.savefig("fig/plot_%.5d.png"%(nr_moves+1))
+	plt.close()
+
 	images = []
 	for i in range(nr_moves+1):
 		images.append( imageio.imread("fig/plot_%.5d.png"%i) )
+	for i in range(10):  # Adding multiple of last img to make it stay longer.
+		images.append( imageio.imread("fig/plot_%.5d.png"%(nr_moves+1)))
 	imageio.mimsave("movie.gif", images)
 
 	shutil.rmtree(fig_path)
+
+if __name__ == "__main__":
+	grid_animator()
