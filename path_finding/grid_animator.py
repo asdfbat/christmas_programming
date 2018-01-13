@@ -5,7 +5,8 @@ import shutil
 import os
 
 def grid_animator(grid_filename="grid.npy", moves_filename="moves.npy",\
-				shortest_path_filename="shortest_path.npy", delete_img=True):
+				  shortest_path_filename="shortest_path.npy", delete_img=True,
+				  savefile_filename="movie.gif"):
 	"""
 	Animating a path-finding algorithm on a square board. Reads numpy-arrays from file.
 	{{grid.npy}}  = (n,m) start board. -1 for unpassable, 0 for passable, 3 for start, 4 for target.

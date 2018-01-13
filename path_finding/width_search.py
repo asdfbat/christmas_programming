@@ -32,7 +32,7 @@ def width_search(grid, start, end):
 					and grid[tile[0],tile[1]] in [0,4]:  # Checking if passable and not out of bounds.
 						if (tile == end).all():
 							end_found = True
-							print("You have arrived at your destination!")
+							print("Search Successful after %d moves!" % nr_moves)
 							return(nr_moves, True)
 						new_tiles.append(tile)
 						nr_moves += 1
@@ -40,6 +40,7 @@ def width_search(grid, start, end):
 						moves_array[nr_moves-1] = tile
 			current_tiles = np.array(new_tiles)
 			moves_list_broad.append(current_tiles)
+		print("Search failed after %d moves. Maze impassable." % nr_moves)
 		return(nr_moves, False)  # If stuck.
 	nr_moves, success = execute_width_search()
 	moves_array = moves_array[:nr_moves]
@@ -56,4 +57,4 @@ def width_search(grid, start, end):
 	np.save("moves.npy", moves_array)
 	np.save("shortest_path.npy", shortest_path)
 	np.save("path_broad.npy", moves_list_broad)
-	return(grid, moves_array, nr_moves, success)
+	return(nr_moves, success)
