@@ -43,17 +43,17 @@ def width_search(grid, start, end):
 		return(nr_moves, False)  # If stuck.
 	nr_moves, success = execute_width_search()
 	moves_array = moves_array[:nr_moves]
-	actual_path = []
+	shortest_path = []
 	current_tile = end
 	for i in range(len(moves_list_broad)-1, -1, -1):
 		for tile in moves_list_broad[i]:
 			for possible_step in current_tile + possible_steps:
 				if (tile == possible_step).all():
-					actual_path.append(tile)
+					shortest_path.append(tile)
 					current_tile = tile
 					break
-	actual_path = np.array(actual_path)
+	shortest_path = np.array(shortest_path)
 	np.save("moves.npy", moves_array)
-	np.save("path.npy", actual_path)
+	np.save("shortest_path.npy", shortest_path)
 	np.save("path_broad.npy", moves_list_broad)
 	return(grid, moves_array, nr_moves, success)
