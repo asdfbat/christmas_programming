@@ -15,11 +15,10 @@ def width_search(grid, start, end):
 	"""
 	np.save("grid.npy", grid)
 	grid_size = np.shape(grid)
-	moves_array = np.zeros( shape=(grid_size[0]*grid_size[1], 2), dtype=int )
+	moves_array = np.zeros( shape=(grid_size[0]*grid_size[1], 2), dtype=int )  # Assuming nr_steps < grid_size^2.
 	moves_list_broad = []
 	possible_steps = np.array([[-1,0],[0,1],[1,0],[0,-1]])
 	def execute_width_search():
-		end_found = False
 		current_tiles = np.array([start.copy()])
 		new_tiles = [0]  # Just making sure new_tiles isn't empty(see next line).
 		nr_moves = 0
@@ -31,7 +30,6 @@ def width_search(grid, start, end):
 					if 0 <= tile[0] < grid_size[0] and 0 <= tile[1] < grid_size[1]\
 					and grid[tile[0],tile[1]] in [0,4]:  # Checking if passable and not out of bounds.
 						if (tile == end).all():
-							end_found = True
 							print("Search Successful after %d moves!" % nr_moves)
 							return(nr_moves, True)
 						new_tiles.append(tile)
